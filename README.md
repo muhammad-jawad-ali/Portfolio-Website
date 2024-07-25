@@ -1,1 +1,1 @@
-Visit Portfolio: https://muhammad-jawad-ali.github.io/Portfolio-Website/
+Visit Portfolio: http://muhammadjawadali.live
