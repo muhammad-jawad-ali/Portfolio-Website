@@ -1,0 +1,9 @@
+# Assets folder - contains large media files
+assets/
+
+# macOS system files
+.DS_Store
+
+# IDE folders
+.vs/
+.vscode/
