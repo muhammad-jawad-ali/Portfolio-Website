@@ -169,7 +169,7 @@ function populateExperience() {
       if (exp.media.videos.length > 0) {
         mediaHTML += '<div class="media-videos">';
         exp.media.videos.forEach(video => {
-          mediaHTML += `<video controls class="media-video" preload="metadata">
+          mediaHTML += `<video controls class="media-video" preload="metadata" onclick="openVideoFullscreen(this)">
                         <source src="${video}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>`;
@@ -220,7 +220,7 @@ function populateProjects() {
       if (project.media.videos.length > 0) {
         mediaHTML += '<div class="media-videos">';
         project.media.videos.forEach(video => {
-          mediaHTML += `<video controls class="media-video" preload="metadata">
+          mediaHTML += `<video controls class="media-video" preload="metadata" onclick="openVideoFullscreen(this)">
                         <source src="${video}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>`;
@@ -490,43 +490,62 @@ if (typeof module !== 'undefined' && module.exports) {
 // LIGHTBOX FUNCTIONALITY
 // ===================================
 function openLightbox(imageSrc) {
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImage = document.getElementById('lightboxImage');
-    
-    lightboxImage.src = imageSrc;
-    lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+
+  lightboxImage.src = imageSrc;
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden'; // Prevent scrolling
 }
 
 function closeLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    lightbox.classList.remove('active');
-    document.body.style.overflow = ''; // Restore scrolling
+  const lightbox = document.getElementById('lightbox');
+  lightbox.classList.remove('active');
+  document.body.style.overflow = ''; // Restore scrolling
 }
 
 // Initialize lightbox controls
 document.addEventListener('DOMContentLoaded', () => {
-    const lightboxClose = document.getElementById('lightboxClose');
-    const lightbox = document.getElementById('lightbox');
-    
-    // Close button
-    if (lightboxClose) {
-        lightboxClose.addEventListener('click', closeLightbox);
-    }
-    
-    // Click outside image to close
-    if (lightbox) {
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                closeLightbox();
-            }
-        });
-    }
-    
-    // ESC key to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeLightbox();
-        }
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightbox = document.getElementById('lightbox');
+
+  // Close button
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', closeLightbox);
+  }
+
+  // Click outside image to close
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
     });
+  }
+
+  // ESC key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeLightbox();
+    }
+  });
 });
+
+// ===================================
+// VIDEO FULLSCREEN FUNCTIONALITY
+// ===================================
+function openVideoFullscreen(videoElement) {
+  // Request fullscreen for the video element
+  if (videoElement.requestFullscreen) {
+    videoElement.requestFullscreen();
+  } else if (videoElement.webkitRequestFullscreen) { // Safari
+    videoElement.webkitRequestFullscreen();
+  } else if (videoElement.mozRequestFullScreen) { // Firefox
+    videoElement.mozRequestFullScreen();
+  } else if (videoElement.msRequestFullscreen) { // IE/Edge
+    videoElement.msRequestFullscreen();
+  }
+
+  // Auto-play when entering fullscreen
+  videoElement.play();
+}
